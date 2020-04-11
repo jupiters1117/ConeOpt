@@ -1,6 +1,10 @@
-ConeOpt
-=======
-Counterfactual Explanations with Optimization
+.. image:: https://img.shields.io/pypi/l/colin-mico.svg
+    :target: https://github.com/jupiters1117/ConeOpt/master/LICENSE
+    :alt: License
+
+ConeOpt: Counterfactual Explanations with Optimization
+------------------------------------------------------
+**ConeOpt** is a Python package that implements an optimization based conterfactual explanations for any machine learning estimator.
 
 Installation
 ------------
@@ -9,7 +13,7 @@ Installation
 
 .. code-block:: bash
 
-   conda create -p ./conda_env python-3.6 --yes
+    conda create -p ./conda_env python-3.6 --yes
 
 2. To install **ConeOpt** package, use:
 

@@ -21,7 +21,7 @@ Installation
 
     pip install -r requirements.txt
 
-2. Run notebook.
+3. Run notebook.
 
 .. code-block:: bash
 

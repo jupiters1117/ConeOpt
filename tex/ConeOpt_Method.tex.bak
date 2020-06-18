@@ -1,0 +1,66 @@
+\section{Methodology}
+\label{sec:Methodology}
+
+Given an original instance $x^0$, we attempt to find a counterfactual instance $x^\prime \coloneqq x^0 +d^\prime \in \R^n$.  
+
+We first define the following loss function that encourages the predicted class $t$ of the perturbed instance $x^\prime$ to be different than the predicted class $t_0$ of the
+original instance $x^0$.
+
+\begin{equation}
+   f_p(x^\prime; \kappa) \coloneqq \max \llp f(x^\prime; t_0) - \max_{t \neq t_0} f(x^\prime; t), \kappa \rlp, \label{obj: prediction}
+\end{equation}
+where $f(x^\prime; t)$ is the $t$-th class prediction probability, and $\kappa > 0$ caps the divergence between $x^0$ and $x^\prime$. 
+
+We also define another objective term to generate a sparse counterfactual instance that is similar to current instance:
+
+\begin{equation}
+   f_d(x^0, x^\prime) \coloneqq \beta \| x^0 - x^\prime  \|_1 +  \| x^0 - x^\prime  \|_2, \label{obj: distance}
+\end{equation}
+where $\beta$ is a  positive parameter that balances the trade-off between the sparsity and similarity of the counterfactual instance $x^\prime$.
+
+To ensure the data distribution of $x^\prime$ lies closer to all neighboring instances in the same class, we introduce a third objective term:
+
+\begin{equation}
+   f_d(x^0, \llp x^j  \mid j \in K_t \rlp) \coloneqq -(1/|K_t|)  \sum_{j \in K_t} (x^j - x^0)^T (x^\prime - x^0). \label{obj: projection}
+\end{equation}
+Note that \eqref{obj: projection} encourages a counterfactual instance $x^\prime$ with a larger sample variance associated with samples in $K_t$. Geometrically, it defines a direction $x^\prime - x^0$ in feature space along which these data vary the most. 
+
+To define $K_t$, we need a representative, unlabeled sample of the training dataset. First the predictive model is called to label the dataset with the classes predicted by the model. Then
+for each class $t$ we encode the instances belonging to that class and order them by increasing $L_2$ distance to ENC($x_0$). The $K_t$ nearest instances in the latent space are included in $K_t$.
+
+With \eqref{obj: prediction}--\eqref{obj: projection}, we now formally define our optimization model:
+ 
+\begin{subequations} \label{model: main}
+\begin{align}
+  \min \quad & f_p(x^\prime; \kappa) + c_{d} f_d(x^0, x^\prime) - c_{p} f_p(x^\prime, \llp x^j  \mid j \in K_t \rlp) \\
+  \text{s.t.} \quad
+       & x^\prime = x^0 + \sum_{j=1}^{n_k} \lambda_j d^j, \\
+       & d^j = x^j - x^0, j \in K_t  \\
+       & \sum_{j=1}^{n_k} \lambda_j \leq \delta, \\
+       & \lambda \geq 0.
+\end{align}
+\end{subequations}
+
+
+\subsection{Trajectory towards counterfactuals}
+\label{subsec:Trajectory towards counterfactuals}
+
+Now we present an algorithm that finds an trajectory towards the counterfactual. 
+
+\begin{algorithm}[ht!]
+\caption{\textit{ConeOpt}}
+\label{algorithm:ConeOpt}
+\begin{algorithmic}[1]
+    \REQUIRE An instance $x^0 \in \mathcal{X}$ to explain, and an index set $K_t$.
+    \ENSURE A set of instances $L$ that provides a trajectory towards the counterfactual instances.
+    \STATE Let $L \coloneqq \llp \phi \rlp$.
+    \WHILE {Termination criteria not met}
+        \STATE Solve optimization problem \eqref{model: main} to obtain a new instance $x^\prime$.
+        	\STATE Update trajectory $L \coloneqq L \cup \llp x^\prime \rlp$.
+        	\STATE Let $x^0 \coloneqq x^\prime$.
+        \STATE Calculate the new mean of each cluster.
+    \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+

@@ -1,0 +1,242 @@
+%-----------------------------------------------------------------------------%
+% BEGIN USE PACKAGE                                                           %
+%-----------------------------------------------------------------------------%
+%\usepackage[section]{placeins}     %float
+%\usepackage{pxfonts}               %\coloneqq
+%\usepackage{latexsym}
+%\usepackage{amsmath}
+\usepackage{amssymb}
+%\usepackage{amsthm}         % my theorem
+\usepackage{xcolor}          % color
+\usepackage{booktabs}       % \midrule, \toprule, \bottomrule
+\usepackage{threeparttable} % footnote
+\usepackage{multirow}       % multi row
+\usepackage{dcolumn}        % column
+\usepackage{rotating}       % for sideways tables/figures
+\usepackage{placeins}       % FloatBarrier
+\usepackage{mathtools}      % coloneqq, etc.
+%\usepackage{times}         % times
+\usepackage{subfig}         % sub figures
+\usepackage{setspace}       % double space
+\usepackage{soul}           % highlight text (usage: \hl{this is some highlighted text})
+\usepackage{float}          % table
+
+%-----------------------------------------------------------------------------%
+% ALGORITHM                                                                   %
+%-----------------------------------------------------------------------------%
+\usepackage[section]{algorithm}
+\usepackage{algorithmic}
+\renewcommand{\algorithmicrequire}{Input:}
+\renewcommand{\algorithmicensure}{Output:}
+\newcommand{\algfontsize}{\small }
+
+%-----------------------------------------------------------------------------%
+% CODE LISTING                                                                %
+%-----------------------------------------------------------------------------%
+\usepackage{listings}
+\lstset{language=C,caption={Descriptive Caption Text},label=DescriptiveLabel}
+\lstdefinestyle{customc}{
+ belowcaptionskip=1\baselineskip,
+ breaklines=true,
+ frame=L,
+ xleftmargin=\parindent,
+ language=C,
+ showstringspaces=false,
+ basicstyle=\footnotesize\ttfamily,
+ keywordstyle=\bfseries\color{green!40!black},
+ commentstyle=\itshape\color{purple!40!black},
+ identifierstyle=\color{blue},
+ stringstyle=\color{orange},
+}
+
+
+%-----------------------------------------------------------------------------%
+% NEWTHEOREM                                                                  %
+%-----------------------------------------------------------------------------%
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{defn}{Definition}[section]
+\newtheorem{alg}{Algorithm}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{coro}{Corollary}[section]
+\newtheorem{rem}{Remmark}[section]
+\newtheorem{mods}{Model}[section]
+\newtheorem{ex}{Example}[section]
+\newtheorem{ques}{Question}[section]
+\newtheorem{assum}{Assumption}[section]
+%tabular font size small
+\let\oldtabular=\tabular
+\def\tabular{\small\oldtabular}
+
+%-----------------------------------------------------------------------------%
+% BEGIN USER DEFINITIONS                                                      %
+%-----------------------------------------------------------------------------%
+\newcommand{\suchthat}  {\;\ifnum\currentgrouptype=16 \middle\fi|\;}
+
+%-----------------------------------------------------------------------------%
+% MISC                                                                        %
+%-----------------------------------------------------------------------------%
+\newcommand{\lsp}       {\left (}
+\newcommand{\rsp}       {\right )}
+\newcommand{\lmp}       {\left [}
+\newcommand{\rmp}       {\right ]}
+\newcommand{\llp}       {\left \{}
+\newcommand{\rlp}       {\right \}}
+\newcommand{\etal}      {{\em et al.}}
+
+%-----------------------------------------------------------------------------%
+% SOLVER                                                                      %
+%-----------------------------------------------------------------------------%
+\newcommand{\IOP}       {{\tt iOptimize}}
+\newcommand{\SOS}       {{\tt SOS}}
+\newcommand{\IOPCP}     {{\tt iOptimize}}
+\newcommand{\MSKVER}    {{\tt 6.0.0.106}}
+\newcommand{\MSK}       {{\tt Mosek6}}
+\newcommand{\AMPL}      {{\tt AMPL}}
+\newcommand{\Cplex}     {{\tt Cplex}}
+\newcommand{\Ipopt}     {{\tt Ipopt}}
+\newcommand{\CMU}       {{\tt CMU-IBM}}
+\newcommand{\MIQP}      {{\tt MIQP}}
+\newcommand{\TSSMILP}   {{\tt TSS-MILP}}
+
+%-----------------------------------------------------------------------------%
+% MATHBB                                                                      %
+%-----------------------------------------------------------------------------%
+\newcommand{\Z}         {\mathbb{Z}}
+\newcommand{\R}         {\mathbb{R}}
+\newcommand{\E}         {\mathbb{E}}
+
+%-----------------------------------------------------------------------------%
+% MATHCAL                                                                     %
+%-----------------------------------------------------------------------------%
+\newcommand{\cC}        {\mathcal{C}}
+\newcommand{\cO}        {\mathcal{O}}
+\newcommand{\cF}        {\mathcal{F}}
+\newcommand{\cL}        {\mathcal{L}}
+\newcommand{\cU}        {\mathcal{U}}
+\newcommand{\cV}        {\mathcal{V}}
+\newcommand{\cK}        {\mathcal{K}}
+\newcommand{\cP}        {\mathcal{P}}
+\newcommand{\cQ}        {\mathcal{Q}}
+\newcommand{\cE}        {\mathcal{E}}
+\newcommand{\cI}        {\mathcal{I}}
+\newcommand{\cJ}        {\mathcal{J}}
+
+\newcommand{\grad}      {\nabla}%\triangledown
+\newcommand{\jac}       {\nabla}
+\newcommand{\hess}      {\nabla^2}
+
+\newcommand{\tu}        {\tilde{u}}
+\newcommand{\tx}        {\tilde{x}}
+\newcommand{\ts}        {\tilde{s}}
+\newcommand{\tw}        {\tilde{w}}
+\newcommand{\tr}        {\tilde{r}}
+\newcommand{\tz}        {\tilde{z}}
+\newcommand{\ty}        {\tilde{y}}
+
+\newcommand{\tX}        {\tilde{X}}
+\newcommand{\tS}        {\tilde{S}}
+\newcommand{\tW}        {\tilde{W}}
+\newcommand{\tR}        {\tilde{R}}
+\newcommand{\tZ}        {\tilde{Z}}
+\newcommand{\tY}        {\tilde{Y}}
+
+\newcommand{\brx}       {\bar{x}}
+\newcommand{\brs}       {\bar{s}}
+\newcommand{\brX}       {\bar{X}}
+\newcommand{\brS}       {\bar{S}}
+
+% HMCP
+\def\xnormal            {\hat{x}}
+\def\xfree              {\tilde{x}}
+\def\ynormal            {\hat{y}}
+\def\yfree              {\tilde{y}}
+
+\def\Xnormal            {\hat{X}}
+\def\Xfree              {\tilde{X}}
+\def\Ynormal            {\hat{Y}}
+\def\Yfree              {\tilde{Y}}
+
+\def\mnormal            {\hat{m}}
+\def\mfree              {\tilde{m}}
+
+\def\maffine            {\hat{m}}
+\def\mconcave           {\tilde{m}}
+
+\def\nnormal            {\hat{n}}
+\def\nfree              {\tilde{n}}
+\def\problemdash        {-}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+
+% RWMICP
+\newcommand{\cCI}       {{\mathcal{C}}_I}
+\def\RWMICPNUMINST      {58}
+\def\RWMICPALLINST      {58}
+
+\def\OPTFPGAP           {3.34}
+\def\OPTFPTIME          {56.53}
+\def\OPTFPNUM           {39}
+\def\OPTFPZEROGAP       {45}
+
+\def\ACFPGAP            {19.78}
+\def\ACFPTIME           {96.73}
+\def\ACFPNUM            {30}
+\def\ACFPZEROGAP        {36}
+
+
+% Single Run
+% HR
+\def\HRSRGAP            {1.26}
+\def\HRSRTIME           {64.93}
+\def\HRSRNUM            {40}
+\def\HRSRZEROGAP        {50}
+% DW1
+\def\DWSRGAP            {1.35}
+\def\DWSRTIME           {65.32}
+\def\DWSRNUM            {40}
+\def\DWSRZEROGAP        {49}
+% DW2
+\def\HDSRGAP            {1.11}
+\def\HDSRTIME           {63.02}
+\def\HDSRNUM            {40}
+\def\HDSRZEROGAP        {51}
+% RR
+%\def\RRSRGAP            {0.38}
+%\def\RRSRTIME           {64.67}
+%\def\RRSRNUM            {40}
+
+\def\HDandOPTFPComp     {6}
+
+% 30 RUNS
+% HR
+\def\HRMRMIN            {1.03}
+\def\HRMRMEAN           {1.3}
+\def\HRMRMAX            {1.69}
+\def\HRMRSTD            {0.3}
+\def\HRMRTIME           {65.38}
+% DW1
+\def\DWMRMIN            {0.93}
+\def\DWMRMEAN           {1.26}
+\def\DWMRMAX            {1.66}
+\def\DWMRSTD            {0.3}
+\def\DWMRTIME           {65.11}
+% DW2
+\def\HDMRMIN            {1.03}
+\def\HDMRMEAN           {1.26}
+\def\HDMRMAX            {1.59}
+\def\HDMRSTD            {0.24}
+\def\HDMRTIME           {63.85}
+% RR
+\def\RRMRMIN            {0.21}
+\def\RRMRMEAN           {0.31}
+\def\RRMRMAX            {0.49}
+\def\RRMRSTD            {0.11}
+\def\RRMRTIME           {65.7}
+
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+

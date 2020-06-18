@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+%\documentclass[dvipsnames,cmyk,12pt]{iOptimize}
+
+%-----------------------------------------------------------------------------%
+% BEGIN USE STYLE                                                             %
+%-----------------------------------------------------------------------------%
+\input{ConeOpt_Style.tex}
+%\input{style-math.tex}
+%\input{style-misc.tex}
+%\input{style-C.tex}
+%\input{style-ResultCode.tex}
+%\input{style-StatCode.tex}
+%\input{style-Parameter.tex}
+
+%-----------------------------------------------------------------------------%
+% BEGIN USE PACKAGE                                                           %
+%-----------------------------------------------------------------------------%
+
+%-----------------------------------------------------------------------------%
+% BEGIN COMPACT FORMAT                                                        %
+%-----------------------------------------------------------------------------%
+\renewcommand{\baselinestretch}{1} % compact
+\setlength{\textheight}{9in} \setlength{\topmargin}{-.5in} \setlength{\textwidth}{6.5in} \setlength{\oddsidemargin}{.0in}
+%-----------------------------------------------------------------------------%
+% BEGIN DOCUMENT                                                              %
+%-----------------------------------------------------------------------------%
+\begin{document}
+
+\title{ConeOpt: An Optimization Approach for Counterfactual Explanations}
+
+\author{
+%Kuo-Ling Huang and Sanjay Mehrotra
+%\footnote{
+%The research of both authors was partially supported by ONR grants N00014-01-10048/P00002, N00014-09-10518, and NSF grant DMI-0522765.}
+\\
+\\
+%Dept. of Industrial Engineering and Management Sciences\\
+%Northwestern University, Evanston, IL, 60208 \\
+%Email: jupiters1117@jupiters1117@gmail.com %\\
+%Email: mehrotra@northwestern.edu \\
+}
+
+\maketitle
+%\baselineskip=16pt
+
+\vspace{1.8in}
+
+\begin{center}
+{\bf Abstract}
+\end{center}
+
+We propose an optimization approach for counterfactual explanations.
+
+\vspace*{.2in} {\bf Key words.} Counterfactual explanations.
+
+%-----------------------------------------------------------------------------%
+% INPUT                                                                       %
+%-----------------------------------------------------------------------------%
+\newpage
+%\input{ConeOpt_Intro.tex}    % Section 1. Introductions
+%\input{IopTssLs_DataProvision.tex} % Section 2. Input details
+\input{ConeOpt_Method.tex}        % Section 3. Integer L-shaped method
+%\input{ConeOpt_Impl.tex} % Section 4. Impelmentation details
+%\input{IopTssLs_Computations.tex}    % Section 5. Computational experiments
+%\input{IopTssLs_Conclusions.tex}     % Section 6. Concluding remarks
+
+%BIB
+\newpage
+\bibliographystyle{abbrv}
+\bibliography{Master}
+
+\end{document}

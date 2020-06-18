@@ -1,0 +1,120 @@
+\section{Introduction}
+\label{sec:Introduction}
+
+
+\subsection{Model formulation}
+\label{subsec:Model formulation}
+
+Let us consider a two-stage stochastic program as follows. Let $\Omega$ represent the set of scenarios, and $p(\omega)$ be the probability distribution function for the random parameters $\omega$ with support $\Omega$. Let $x \in \mathbb{R}^{n_1}$ be the first-stage (i.e., here-and-now) decision variables, and let $y(\omega) \in \mathbb{R}^{n_2}$ be the second-stage (i.e., recourse or wait-and-see) decision variables representing recourse decisions corresponding to scenario $\omega$. Moreover, let the first $i$ variables of $x$ be integer valued. A two-stage stochastic programming formulation is given by
+\begin{subequations} \label{eqn:master problem}
+\begin{align}
+  \min \quad & c^T x + \cQ(x) \\
+  \text{s.t.} \quad
+  & b^L \leq A x \leq b^U \\
+  & x \in \Z^{i}_{+} \times \R^{n_1 - i}_{+},
+\end{align}
+\end{subequations}
+with the second stage recourse function $\cQ(x)\coloneqq \E \lmp Q(x, \omega) \rmp$,
+\begin{subequations} \label{eqn:subproblem}
+\begin{align}
+  Q(x, \omega):= \min \quad & q(\omega)^T y(\omega)) \\
+  \text{s.t.} \quad
+  & h^L(\omega) \leq W(\omega) y(\omega) \leq h^U(\omega) \quad \forall \omega \in \Omega - T(\omega) x\\
+  & y(\omega)  \in \R^{n_2}_{+},
+\end{align}
+\end{subequations}
+where $A \in \R^{m_1 \times n_1}, b \in \R^{m_1}, c \in \R^{n_1}$ and $T(\omega) \in \R^{m_2 \times n_1}$, $W(\omega) \in \R^{m_2 \times n_2}$, $h^L(\omega), h^U(\omega) \in \R^{m_2}$, $q(\omega) \in \R^{n_2}$ for each $\omega \in \Omega$.
+A reformulation of problem (\ref{eqn:model formulation}) is the extensive form deterministic equivalent model (DE)
+\begin{subequations} \label{eqn:model formulation}
+\begin{align}
+  \min \quad & c^T x + \int_{\omega \in \Omega} p(\omega) q(\omega)^T y(\omega) d\omega \\
+  \text{s.t.} \quad
+  & b^L \leq A x \leq b^U \\
+  & h^L(\omega) \leq T(\omega) x + W(\omega) y(\omega) \geq h^U(\omega) \quad \forall \omega \in \Omega \\
+  & x \in \Z^{i}_{+} \times \R^{n_1 - i}_{+}, y(\omega) \in \R^{n_2}_{+}.
+\end{align}
+\end{subequations}
+ In the stochastic programming literature, $T(\omega)$ is called a technology matrix and $W(\omega)$ is called a recourse matrix.
+
+\subsubsection{Deterministic equivalent format}
+\label{subsubsec: Deterministic equivalent format}
+
+When $\Omega$ represents a finite set of scenarios, the expectation in (\ref{eqn:master problem}) can be replaced by a probability-weighted sum.  The DE reformulation is the most straight forward approach to solve a two-stage stochastic mixed integer program. Let $S$ be the number of scenarios in $\Omega$, and $x \in \Z^{i}_{+} \times \R^{n_1 - i}_{+}, y_1,\ldots ,y_S \in \R^{n_2}_{+}$. The DE formulation of problem (\ref{eqn:model formulation}) is presented in the following form:
+\begin{align}
+\begin{array}{rllllllllll}
+    {\min}      & c_f  &+         & c^T x  & +& p(1) q_1^T y_1       & \ldots & + &p(S) q_S^T y_S & & \\
+                    &   &   &     &             &        &  &  &  &  \\
+    \text{s.t.} &  b^L &\leq& Ax  &                      &        &                  & &             &\leq  & b^U, \\
+                &  h^L_1 &\leq& T_1 x & + &W_1 y_1     &      &     &     & \leq & h^U_1, \\
+                &          & \vdots&                 &    &         &       \ddots   &        &              & \vdots &        \\
+                &  h^L_S & \leq &T_S  &     &             &        &  +& W_S y_S    &\leq  & h^U_S,
+\end{array}
+\end{align}
+with the bounds
+\begin{align}
+\begin{array}{lllll}
+                 x^L           & \leq   & x    & \leq   & x^U,     \\
+                 y^L_1         & \leq   & y_1  & \leq   & y^U_1,   \\
+                               & \vdots &      & \vdots &          \\
+                 y^L_S         & \leq   & y_S  & \leq   & y^U_S.
+\end{array}
+\end{align}
+
+\subsubsection{C API}
+\label{subsubsec:C API}
+
+\IOP~provides a C API which gives programmatic access to the solver functionality. An online iOptimize C-API user manual can be found in the following website:
+\[
+    %\mbox{TODO.}
+    \mbox{\tt http://www.voptimize.org}.
+\]
+
+\subsubsection{SMPS Format}
+\label{subsubsec:SMPS Format}
+
+\IOP~also supports a subset of SMPS~\cite{Birge.Louveaux1997IntroductionToStochastic}, which is an early format for stochastic programming problems. In this format three separate data files are provided:
+
+\begin{itemize}
+  \item Core file: a generic presentation of the variables and constraints in MPS (MPSX) layout. Data values need not feature any particular scenario, but every random data element must be represented.
+  \item Time file: specifying the subdivisions of the core file that belong to each stage.
+  \item Stoch file: specifying every scenario, the values of random data, and probabilities. However, we note that at this stage, only discrete forms of random distributions are implemented in \IOP.
+\end{itemize}
+
+\subsection{External Solvers}
+\label{subsec:External Solvers}
+The current version of \IOP~uses \Cplex~\cite{IBMILogCplex} as an external solver. The following versions of \Cplex~are supported:
+\begin{itemize}
+  \item 12.5.0.0, 12.5.1.0
+  \item 12.6.0.0, 12.6.1.0, 12.6.2.0, 12.6.3.0
+\end{itemize}
+A trail or academic version of \Cplex~can be downloaded from the following website:
+\[
+    \mbox{\tt http://goo.gl/gh1SoG}.
+\]
+
+\subsection{\IOP-\SOS \ Installation}
+\label{subsec:Installation}
+\IOP~supports Linux 64-bit compatible operating system (GLIBC version at least 2.14). After downloading the package, installation requires simply moving the package to the preferred directory. Contents of the package are
+\begin{itemize}
+  \item ./bin: a folder containing the iOptimize dynamic library.
+  \item ./include: a folder containing the iOptimize header files.
+  \item ./examples: a folder containing examples of using the iOptimize package.
+\end{itemize}
+
+A gcc makefile is included in the folder examples. To compile the code, use command
+\[
+    {\tt make~all}.
+\]
+
+Once completed, two executable files, namely {\tt IopTssLpEx1} and {\tt IopTssLpEx2} shall be generated. To run the examples, use command
+\[
+    {\tt ./IopTssLpEx1} \mbox{~~or~~} {\tt ./IopTssLpEx2}.
+\]
+
+{\bf A path to the dynamic library of the external solver \Cplex~must be specified before running the code}. The path is specified in the parameter file {\tt TssLp.par} located in folder ./example by modifying the following two parameters:
+\begin{itemize}
+  \item {\tt IOP\_SPA\_SOS\_EXTSOL\_DLL\_PATH}: A path to the directory where the \Cplex~dynamic library is currently located. For example, {\tt"/PATH/TO/ibm/ILOG/}{\tt CPLEX\_Studio1261/}{\tt cplex/bin/x86-64\_linux/"}.
+  \item {\tt IOP\_SPA\_SOS\_EXTSOL\_DLL\_NAME}: A filename of the \Cplex~dynamic library. For example, {\tt "libcplex1261.so"}.
+\end{itemize}
+The editor such as {\tt vim} may be used to edit the parameter file {\tt TssLp.par}.
+

@@ -1,0 +1,77 @@
+\section{Implementation details}
+\label{sec:Implementation details}
+
+
+
+We use \Cplex~\cite{IBMILogCplex}~for solving the linear programs and performing the branch-and-bound tree search. To add the Benders cuts to the master problem during the search, we use {\tt CPXsetlazyconstraintcallbackfunc} and {\tt CPXsetusercutcallbackfunc} callback functions.
+
+\subsection{Scenario partitioning}
+\label{subsec:Scenario partitioning}
+
+The hybrid-cut method partitions the scenarios into multiple sets and hence a partitioning method must be used. Different partitioning strategies have been studied such as random partitioning that randomly picks an aggregate for every scenario, or a round-robin partitioning that evenly distributes the scenarios on all aggregates~\cite{Wolf2013Advancedaccelerationtechniques}. In our implementation, we use two different way to for the scenario partitioning: round-robin partitioning and K-means clustering partitioning~\cite{Hartigan.Wong1979AlgorithmAS136:}. Below we give implementation details of the later approach using a K-means++ heuristic.
+
+The purpose of K-means clustering is to partition a set of data into a given number of clusters such that each data point is included in the cluster whose mean is closet. The standard form of this method is depicted in Algorithm \ref{algorithm:K-menas}.
+
+\begin{algorithm}[ht!]
+\caption{\textit{K-means}}
+\label{algorithm:K-menas}
+\begin{algorithmic}[1]
+    \REQUIRE $n$ data points and an initial set of $k$ means.
+    \ENSURE $k$ clusters.
+    \WHILE {Assignments no longer change}
+        \STATE Assign each each point to the cluster with the closet mean.
+        \STATE Calculate the new mean of each cluster.
+    \ENDWHILE
+\end{algorithmic}
+\end{algorithm}
+
+We determine the distance from a point (scenario) to another point or from a point to the mean of a group based on the Euclidean distance. The error associated with a group is then the total distance of the scenarios from the mean of the group to which they are assigned. However, the number of groups (or aggregates in our case), $k$, is not known a priori. To determine this value, we use
+$C_{agg} \times \ln{| S |}^2$, where $C_{agg}$ is a positive constant number.
+
+To create the initial set of $k$ groups for Algorithm~\ref{algorithm:K-menas}, we first identify $k$ core scenarios representing the the mean of a group using a K-means++ heuristic \cite{Arthur.Vassilvitskii2007Kmeans++:advantages}. This method iteratively chooses the core scenarios randomly from the set of scenarios with weighted probabilities that reflect the distance of each scenario from the previous core scenario chosen. Along with approximation guarantees relating to the error of the resulting clustering, the authors provided compelling computational evidence that this methodology is superior to simply choosing at random.
+
+Let $d^s, s = 1,\ldots,|S|$ be denoted the vectors of statistics associated with each scenario. This method is depicted in Algorithm \ref{algorithm:K-menas++}.
+
+\begin{algorithm}[ht!]
+\caption{\textit{K-means++}}
+\label{algorithm:K-menas++}
+\begin{algorithmic}[1]
+    \REQUIRE $n$ data points.
+    \ENSURE An initial set of $k$ means.
+    \STATE Let $W \coloneqq \llp 1, \ldots, S \rlp$.
+    \STATE Take one scenario $c^1$ from $W$ randomly as a core scenario.
+    \FOR{$p \coloneqq 2,\ldots,k$}
+        \STATE Let $W \coloneqq W\backslash \{ p \}$.
+        \STATE Define a new core scenario by randomly selecting among the scenarios net yet core with probabilities
+        $$
+            \frac{\| d^{j} - d^{p-1}  \|}{ \sum_{i \in W}\|d^i - d^{p-1} \| }, j \in W.
+        $$
+    \ENDFOR
+\end{algorithmic}
+\end{algorithm}
+
+The computational complexity for the K-means is $\cO(kndi)$, where $n$ is the number of $d$-dimensional vectors, $k$ is the number of clusters, and $i$ the number of iterations needed until convergence, and the running time in practice can be significant. To reduce the computational burden, we may partition the whole data into $k_{seg}$ subsets through K-means method, and then perform the K-means method for each subset. This reduce the complexity to $\cO((k_{seg} + 1)ndi)$. Note that if the reduction of the complexity is not satisfactory, we may further partition subset, resulting in a recursive partitioning scheme.
+
+\subsection{Advanced start}
+\label{subsec:Advanced start}
+
+Often time the initial iterations of cutting plane methods can be ineffective. This unfortunately make the cutting plane methods converge relatively slow. To overcome this difficulty, Infanger proposes to compute the expected value problem (EV) solution and then start the L-Shaped method on the original problem instance, but with the cuts generated during the computation of the EV solution. The hope is that the generated cuts make the algorithm prevent from generating ineffective cuts in the early L-Shaped iterations. In additional to the EV solution, other solutions such as an optimal solution for the worst-case scenario or the best-case scenario may also be used as an advanced start solutions~\cite{Wolf.Koberstein2013Dynamicsequencingand}. Such solutions can be obtained by solving the Wait-and-See problem, which is a relaxation to the original stochastic optimization problem obtained by dropping the nonanticipativity restriction.
+
+%\subsection{Unbounded and infeasible status}
+%\label{subsec:Unbounded and infeasible status}
+
+%\subsection{Generation of a safe cut}
+%\label{subsec:Generation of a safe cut}
+
+%\subsection{Improvement on the initial lower bound}
+%\label{subsec:Improvement on the initial lower bound}
+
+\subsection{Parallelization}
+\label{subsec:Parallelization}
+
+As all subproblems are independent of one another, parallelization of the second stage computations can be done naturally. Modern processors have multiple cores that allow parallel execution at a single computer. To take advantage of that we parallelize the algorithm in a fashion similar to \cite{Ariyawansa.Hudson1991Performancebenchmarkparallel, Wolf2013Advancedaccelerationtechniques} on a symmetric-multiprocessing architecture. In particular, we solve the subproblems and perform the cut aggregation procedure concurrently. This is done though shared-memory parallel programming API {\tt OpenMp}~\cite{OpenMP(OpenMulti}.
+
+In our implementation, we solve the subproblems concurrently while solving the relaxation problem and solving the root node problem. Once the branching starts, we solve the subproblems sequentially and let \Cplex~to perform the parallel tree search. We note that as \Cplex~callback functions is used, a run-to-run deterministic results cannot be guaranteed in multi-threaded mode.
+
+
+

@@ -9,11 +9,12 @@ ConeOpt: Counterfactual Explanations with Optimization
 Installation
 ------------
 
-1. Create a Python env. For example,
+1. Create a Python env adn then activate it.
 
 .. code-block:: bash
 
-    conda create -p ./conda_env python-3.6 --yes
+    conda create -p ./conda_env python=3.7 --yes
+    conda activate C:\Users\foundation\research\ColinML\ConeOpt\conda_env    
 
 2. To install **ConeOpt** package, use:
 
@@ -21,7 +22,7 @@ Installation
 
     pip install -r requirements.txt
 
-3. Run notebook.
+3. Run notebook and open the file: ``POC.ipynb``.
 
 .. code-block:: bash
 

@@ -7,5 +7,6 @@ pyitlib>=0.2.2
 bottleneck>=1.0.0
 tensorflow>=2.0.0
 jupyter
+notebook
 matplotlib
 

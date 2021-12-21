@@ -13,18 +13,19 @@ Installation
 
 .. code-block:: bash
 
-    conda create -p ./conda_env python=3.7 --yes
-    conda activate C:\Users\foundation\research\ColinML\ConeOpt\conda_env    
+    conda create -p ./env39 python=3.9 --yes
+    conda activate ./env39    
 
-2. To install **ConeOpt** package, use:
+2. To install reuqired packages, use:
 
 .. code-block:: bash
 
     pip install -r requirements.txt
 
-3. Run notebook and open the file: ``POC.ipynb``.
+3. To test **ConeOpt**, run notebook and open the file: ``POC2.ipynb``.
 
 .. code-block:: bash
 
     jupyter notebook
 
+4. To test **Alibi**, follow the instruction [here](https://docs.seldon.io/projects/alibi/en/latest/overview/getting_started.html) to install the package. Then open ``alibi/examples/cfproto_mnist.ipynb``to test the Counterfactual Analysis. Detailed explanation of the implementaiton can be found in in https://docs.seldon.io/projects/alibi/en/latest/methods/CFProto.html

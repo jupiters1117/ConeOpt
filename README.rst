@@ -28,4 +28,6 @@ Installation
 
     jupyter notebook
 
-4. To test **Alibi**, follow the instruction [here](https://docs.seldon.io/projects/alibi/en/latest/overview/getting_started.html) to install the package. Then open ``alibi/examples/cfproto_mnist.ipynb``to test the Counterfactual Analysis. Detailed explanation of the implementaiton can be found in in https://docs.seldon.io/projects/alibi/en/latest/methods/CFProto.html
+4. To test **Alibi**, follow the instruction `here <https://docs.seldon.io/projects/alibi/en/latest/overview/getting_started.html>`_ to install the package. Then open ``alibi/examples/cfproto_mnist.ipynb``to test the Counterfactual Analysis. Detailed explanation of the implementaiton can be found `here <https://docs.seldon.io/projects/alibi/en/latest/methods/CFProto.html>`_.
+
+Other related documentations can be found `here <https://arxiv.org/search/cs?searchtype=author&query=Van+Looveren%2C+A>`_.
